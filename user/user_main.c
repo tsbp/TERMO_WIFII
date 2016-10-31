@@ -28,14 +28,38 @@ uint8 swap = 0;
 //int cntr = 5;
 
 #define PLOT_INTERVAL   (1800)
-
+uint8 timeTrue = 0;
 //======================= Main code function ============================================================
 void ICACHE_FLASH_ATTR loop(os_event_t *events)
 {
+	if(!timeTrue)
+	{
+		uint32 ts = sntp_get_current_timestamp();
+		uint8 t[24];
+		os_memset(t, 0, sizeof(t));
+		os_sprintf(t, "%s", sntp_get_real_time(ts));
+//		int i;
+//		for(i =0; i < sizeof(t); i++)
+//			ets_uart_printf("t[%d] = %c\r\n", i, t[i]);
+
+		ets_uart_printf("time %s \r\n", t);
+		if(ts != 0)
+		{
+			date_time.TIME.sec  = (t[17]-'0')*10 + (t[18]-'0');
+			date_time.TIME.min  = (t[14]-'0')*10 + (t[15]-'0');
+			date_time.TIME.hour = (t[11]-'0')*10 + (t[12]-'0');
+//			date_time.DATE.day  = 0;
+//			date_time.DATE.month  = 0;
+//			date_time.DATE.year  = 0;
+
+			timeTrue = 1;
+
+		}
+	}
 
 	if (flashWriteBit == 1) saveConfigs();
 
-	ets_uart_printf("wifi_station_get_connect_status(%d) \r\n", wifi_station_get_connect_status());
+	//ets_uart_printf("wifi_station_get_connect_status(%d) \r\n", wifi_station_get_connect_status());
 	//=========== get temperature ===================
 	getTemperature();
     signed int a = (tData[0][3] - '0') + (tData[0][2] - '0') * 10	+ (tData[0][1] - '0') * 100;
@@ -150,6 +174,8 @@ void ICACHE_FLASH_ATTR user_init(void)
 #else
 	init_screen();
 #endif
+
+	sntp_initialize();
 
 	wifi_station_disconnect();
 	wifi_station_set_auto_connect(0);

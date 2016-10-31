@@ -26,16 +26,18 @@ void sntp_initialize(void)
 	sntp_setservername(1, "ntp.sjtu.edu.cn"); // set server 1 by domain name
 	ipaddr_aton("210.72.145.44", addr);
 	sntp_setserver(2, addr); // set server 2 by IP address
+	sntp_set_timezone(+2);
 	sntp_init();
 	os_free(addr);
 }
-//================== SNTP ==================================================
-void sntp_get_stamp(void)
-{
-	uint32 current_stamp;
-	current_stamp = sntp_get_current_timestamp();
-	ets_uart_printf("sntp: %d, %s \n",current_stamp, sntp_get_real_time(current_stamp));
-}
+////================== SNTP ==================================================
+//uint8 sntp_get_stamp(void)
+//{
+//	uint32 current_stamp;
+//	current_stamp = sntp_get_current_timestamp();
+//	//ets_uart_printf("sntp: %d, %s \n",current_stamp, sntp_get_real_time(current_stamp));
+//	return sntp_get_current_timestamp();
+//}
 //==============================================================================
 
 #ifdef COLOR_LCD

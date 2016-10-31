@@ -19,7 +19,7 @@ EXTRA_BASE	?= c:/Espressif/extra
 
 # esptool path and port
 ESPTOOL		?= $(SDK_TOOLS)/esptool.exe
-ESPPORT		?= COM6
+ESPPORT		?= COM14
 
 # Baud rate for programmer
 ESPBAUD		?= 576000
@@ -44,4 +44,4 @@ SPI_MODE ?= QIO
 # 4 : 4096 KB (512 KB + 512 KB)
 # 5 : 2048 KB (1024 KB + 1024 KB)
 # 6 : 4096 KB (1024 KB + 1024 KB)
-SPI_SIZE_MAP ?= 2
+SPI_SIZE_MAP ?= 0
