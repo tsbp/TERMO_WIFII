@@ -47,7 +47,7 @@ void ICACHE_FLASH_ATTR LCD_setAddr(unsigned int x0, unsigned int y0, unsigned in
    lcdWrite(DATA, (unsigned char) (y1));
 }
 //==============================================================================
-void ICACHE_FLASH_ATTR LCD_wakeup(void)
+void ICACHE_FLASH_ATTR LCD_wakeup(uint8 aOrient)
 {
 	hspi_init();
 
@@ -65,7 +65,7 @@ void ICACHE_FLASH_ATTR LCD_wakeup(void)
   lcdWrite(COMMAND, DISPON); //SendCom(0x29);       // Включение дисплея
   os_delay_us(100000); //for(unsigned int i = 0; i < 0xffff; i++);       // delay_ms(1);
   lcdWrite(COMMAND, MADCTR); //SendCom(0x36);
-  lcdWrite(DATA,    0x00); //SendDat(0xC0);       // Книжная ориентация дисплея
+  lcdWrite(DATA,    aOrient); //SendDat(0xC0);       // Книжная ориентация дисплея
   os_delay_us(100000); //for(unsigned int i = 0; i < 0xffff; i++);       // delay_ms(1);
   os_delay_us(100000); //for(unsigned int i = 0; i < 0xffff; i++);       // delay_ms(1);
 //  lcdWrite(COMMAND, COLMOD); //SendCom(0x3A);

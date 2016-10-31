@@ -15,7 +15,7 @@
 
 static volatile os_timer_t service_timer;
 static void  service_timer_cb(os_event_t *events);
-uint8_t factory_reset_pin = 2;
+uint8_t factory_reset_pin = 3;
 uint8	serviceMode = MODE_NORMAL;
 
 char tData[2][4] = {"+000", "+000"};
@@ -108,9 +108,15 @@ void ICACHE_FLASH_ATTR service_timer_stop (void)
 //======================= GPIO interrupt callback =======================================================
 //extern uint8_t pin_num[GPIO_PIN_NUM];
 int resetCntr = 0;
+int8 scrOrientation = 0;
 //=======================
 void ICACHE_FLASH_ATTR button_intr_callback(unsigned pin, unsigned level)
 {
+#ifdef COLOR_LCD
+	if(scrOrientation == 0) scrOrientation = 0xc0;
+	else scrOrientation = 0;
+	init_screen(scrOrientation);
+#endif
 	//ets_uart_printf("RESET BUTTON PRESSED!!!\r\n");
 	serviceMode = MODE_BTN_RESET;
 		resetCntr = 0;
@@ -175,6 +181,10 @@ static void ICACHE_FLASH_ATTR service_timer_cb(os_event_t *events) {
 					if (resetCntr >= 10)
 					{
 						os_printf("do reset \r\n");
+
+						os_memset(configs.hwSettings.wifi.SSID, 0,sizeof(configs.hwSettings.wifi.SSID));
+						os_sprintf(configs.hwSettings.wifi.SSID, "%s", "TERMO_WIFI");
+
 						configs.hwSettings.wifi.mode = SOFTAP_MODE;
 						configs.hwSettings.wifi.auth = AUTH_OPEN;
 						saveConfigs();

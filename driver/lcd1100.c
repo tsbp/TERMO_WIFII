@@ -22,7 +22,7 @@ static int8_t pinSclk = 14;  // LCD Clk .... Pin 5
 
 #define sclk(a){	if (a == 0)		GPIO_OUTPUT_SET(pinSclk, LOW);	else		GPIO_OUTPUT_SET(pinSclk, HIGH);}
 #define sda(a) 	  {if (a == 0)  GPIO_OUTPUT_SET(pinSdin, LOW); else  GPIO_OUTPUT_SET(pinSdin, HIGH);}
-#define cs(a)     {if (a == 0)  GPIO_OUTPUT_SET(pinSce, LOW);  else  GPIO_OUTPUT_SET(pinSce, LOW);}
+#define cs(a)     {if (a == 0)  GPIO_OUTPUT_SET(pinSce, LOW);  else  GPIO_OUTPUT_SET(pinSce, HIGH);}
 #define rst(a)    {if (a == 0)  GPIO_OUTPUT_SET(pinReset, LOW); else  GPIO_OUTPUT_SET(pinReset, HIGH);}
 
 //==============================================================================
@@ -66,26 +66,20 @@ void ICACHE_FLASH_ATTR Lcd_Init(void){
   os_delay_us(10000);			// 5mS so says the stop watch(less than 5ms will not work)
   rst(1);// = 1;
   
-  spi(CMD,0x24); // write VOP register
-  spi(CMD,0x00); 
-  spi(CMD,0xA4); // all on/normal display
-  //spi(CMD,0xA6);
-//  spi(CMD,0xAf);
-  spi(CMD,0x2f); // Power control set(charge pump on/off)
+  // STE2007 controller initialization
   
-//  spi(CMD,0x3c); // Oscillator selection
- 
-  
-  spi(CMD,0x40); // set start row address = 0
-  spi(CMD,0xb0); // set Y-address = 0
-  spi(CMD,0x10); // set X-address, upper 3 bits
-  spi(CMD,0x0);  // set X-address, lower 4 bits
+  spi(CMD, 0x2F);//Включение дисплея
+  spi(CMD, 0x38);//Включение термокомпенсации
+  spi(CMD, 0xA0);//Инверсия отображения
+  spi(CMD, 0xA6);//0xA7 - инверсия отображения
+  spi(CMD, 0x9f);//Установка контраста
+  spi(CMD, 0xEC);//Установка частоты обновления 80 Гц
+
   //spi(CMD,0xC8); // mirror Y axis (about X axis)
-  spi(CMD,0xa0); // Invert screen in horizontal axis
-  spi(CMD,0xac); // set initial row (R0) of the display
-  spi(CMD,0x07);
-  //spi(CMD,0xF9); // 
-  spi(CMD,0xaf); // display ON/OFF
+  //spi(CMD,0xA1);
+
+  spi(CMD, 0xAF);//Разрешение работы LCD
+  spi(CMD, 0xA4);//Очистка экрана
 
   Lcd_Clear(); // clear LCD
   //LINES();

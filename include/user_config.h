@@ -9,7 +9,7 @@
 #define INCLUDE_USER_CONFIG_H_
 
 
-//#define  COLOR_LCD
+#define  COLOR_LCD
 
 
 

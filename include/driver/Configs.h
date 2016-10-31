@@ -17,8 +17,8 @@ typedef union __packed
 #define SENSOR_MODE_LOCAL			(0x00)
 #define SENSOR_MODE_REMOTE			(0x01)
 
-#define DEVICE_MODE_MASTER			(0x00)
-#define DEVICE_MODE_SLAVE			(0x01)
+#define DEVICE_MODE_MASTER			(0x01)
+#define DEVICE_MODE_SLAVE			(0x00)
 //==============================================================================
 typedef struct __attribute__ ((__packed__))
 {
@@ -82,7 +82,11 @@ extern u_CONFIG configs;
 extern u_CONFIG *cPtrH, *cPtrW;
 extern uint8 flashWriteBit;
 //==============================================================================
-void ICACHE_FLASH_ATTR init_screen(void);
+#ifdef COLOR_LCD
+void ICACHE_FLASH_ATTR init_screen(uint8 aOrient);
+#else
+void ICACHE_FLASH_ATTR init_screen();
+#endif
 uint16 ICACHE_FLASH_ATTR getSetTemperature();
 unsigned char ICACHE_FLASH_ATTR cmpTemperature (uint16 aT, signed int arcTemper);
 void ICACHE_FLASH_ATTR showTemperature(uint8 aSwap, unsigned char *aBuf);

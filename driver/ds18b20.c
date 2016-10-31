@@ -325,18 +325,22 @@ uint16_t ICACHE_FLASH_ATTR crc16(const uint16_t *data, const uint16_t  len)
 
 
 //==============================================================================
+
+//==============================================================================
 void OWFind(void)
 {
+	int attempts = 0;
   DevicesCount = 0;
   LastDiscrepancy = 0;
   LastDeviceFlag = FALSE;
   LastFamilyDiscrepancy = 0;
   do
   {
+	  attempts++;
 	        ds_search(device[DevicesCount].data);//OWNext();
 //            for(unsigned int i = 0; i < 8; i++)
 //              device[DevicesCount - 1].data[i] = ROM_NO[i];
   }
-  while (!LastDeviceFlag);
+  while (!LastDeviceFlag && (attempts < 10));
   ets_uart_printf("Found devices cnt = %d\r\n", DevicesCount);
 }

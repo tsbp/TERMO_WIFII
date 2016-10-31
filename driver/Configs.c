@@ -19,20 +19,26 @@
 uint8 flashWriteBit;
 const char   Days[7][3]    = {{"СБТ"},{"ВСК"},{"ПОН"},{"ВТО"},{"СРД"},{"ЧТВ"},{"ПТН"}};
 //==============================================================================
-void ICACHE_FLASH_ATTR init_screen(void)
+#ifdef COLOR_LCD
+void ICACHE_FLASH_ATTR init_screen(uint8 aOrient)
+#else
+void ICACHE_FLASH_ATTR init_screen()
+#endif
 {
+
+	ets_uart_printf("configs.hwSettings.wifi.mode = %d\r\n", configs.hwSettings.wifi.mode);
+    ets_uart_printf("configs.nastr.SSID = %s\r\n", configs.hwSettings.wifi.SSID);
+    ets_uart_printf("configs.nastr.SSID_PASS = %s\r\n", configs.hwSettings.wifi.SSID_PASS);
 
 #ifdef COLOR_LCD
 
-	ets_uart_printf("configs.hwSettings.wifi.mode = %d\r\n", configs.hwSettings.wifi.mode);
-	ets_uart_printf("configs.nastr.SSID = %s\r\n", configs.hwSettings.wifi.SSID);
-	ets_uart_printf("configs.nastr.SSID_PASS = %s\r\n", configs.hwSettings.wifi.SSID_PASS);
+
 
 	//=================== color ============
-	LCD_wakeup();
+	LCD_wakeup(aOrient);
 
 	printString (10, 240, BLACK, WHITE, configs.hwSettings.wifi.SSID);
-	printString (10, 256, BLACK, WHITE, configs.hwSettings.wifi.SSID_PASS);
+	if(configs.hwSettings.wifi.auth != AUTH_OPEN) printString (10, 256, BLACK, WHITE, configs.hwSettings.wifi.SSID_PASS);
 
 
 	//====== Draw screen =======
@@ -65,8 +71,12 @@ void ICACHE_FLASH_ATTR init_screen(void)
 				else if(configs.hwSettings.wifi.mode == STATION_MODE) print_string("Клиент");
 				Gotoxy(0,1);
 				print_string(configs.hwSettings.wifi.SSID);
-				Gotoxy(0,2);
-				print_string(configs.hwSettings.wifi.SSID_PASS);
+				if(configs.hwSettings.wifi.auth != AUTH_OPEN)
+				{
+					Gotoxy(0,2);
+					print_string(configs.hwSettings.wifi.SSID_PASS);
+				}
+
 				Gotoxy(0,3);
 				if(configs.hwSettings.deviceMode == DEVICE_MODE_MASTER) print_string("Устр: Главный");
 				else if(configs.hwSettings.deviceMode == DEVICE_MODE_SLAVE) print_string("Устр: Ведомый");

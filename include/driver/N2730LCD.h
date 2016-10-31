@@ -118,7 +118,7 @@ void ICACHE_FLASH_ATTR serialSendData(void);
 void ICACHE_FLASH_ATTR lcdWrite(unsigned char aType, unsigned char aByte);
 void ICACHE_FLASH_ATTR LCD_Init(void);
 void ICACHE_FLASH_ATTR LCD_setAddr(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1);
-void ICACHE_FLASH_ATTR LCD_wakeup(void);
+void ICACHE_FLASH_ATTR LCD_wakeup(uint8 aOrient);
 void ICACHE_FLASH_ATTR setPixel(unsigned long aCol);
 void ICACHE_FLASH_ATTR lcd_clear(unsigned long aCol);
 void ICACHE_FLASH_ATTR char_6x8 (unsigned int aX, unsigned int aY, unsigned long aCOL, unsigned long aBGCOL, unsigned char aChar);
