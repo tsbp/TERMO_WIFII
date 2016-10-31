@@ -18,7 +18,26 @@
 //==============================================================================
 uint8 flashWriteBit;
 const char   Days[7][3]    = {{"ÑÁÒ"},{"ÂÑÊ"},{"ÏÎÍ"},{"ÂÒÎ"},{"ÑĞÄ"},{"×ÒÂ"},{"ÏÒÍ"}};
+//================== SNTP ==================================================
+void sntp_initialize(void)
+{
+	ip_addr_t *addr = (ip_addr_t *)os_zalloc(sizeof(ip_addr_t));
+	sntp_setservername(0, "us.pool.ntp.org"); // set server 0 by domain name
+	sntp_setservername(1, "ntp.sjtu.edu.cn"); // set server 1 by domain name
+	ipaddr_aton("210.72.145.44", addr);
+	sntp_setserver(2, addr); // set server 2 by IP address
+	sntp_init();
+	os_free(addr);
+}
+//================== SNTP ==================================================
+void sntp_get_stamp(void)
+{
+	uint32 current_stamp;
+	current_stamp = sntp_get_current_timestamp();
+	ets_uart_printf("sntp: %d, %s \n",current_stamp, sntp_get_real_time(current_stamp));
+}
 //==============================================================================
+
 #ifdef COLOR_LCD
 void ICACHE_FLASH_ATTR init_screen(uint8 aOrient)
 #else

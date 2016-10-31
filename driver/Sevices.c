@@ -17,8 +17,9 @@ static volatile os_timer_t service_timer;
 static void  service_timer_cb(os_event_t *events);
 uint8_t factory_reset_pin = 3;
 uint8	serviceMode = MODE_NORMAL;
+int cntr = 5;
 
-char tData[2][4] = {"+000", "+000"};
+char tData[2][4] = {"+250", "+250"};
 
 u_REMOTE_TEMP remoteTemp = {.head = BROADCAST_DATA,
                             .sData[0] = "0000",
@@ -116,6 +117,7 @@ void ICACHE_FLASH_ATTR button_intr_callback(unsigned pin, unsigned level)
 	if(scrOrientation == 0) scrOrientation = 0xc0;
 	else scrOrientation = 0;
 	init_screen(scrOrientation);
+	cntr = 5;
 #endif
 	//ets_uart_printf("RESET BUTTON PRESSED!!!\r\n");
 	serviceMode = MODE_BTN_RESET;

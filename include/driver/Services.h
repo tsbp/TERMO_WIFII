@@ -23,6 +23,7 @@ void ICACHE_FLASH_ATTR getTemperature(void);
 //==============================================================================
 extern uint8	serviceMode;
 extern char tData[2][4];
+extern int cntr;
 //==============================================================================
 typedef union __packed
 {

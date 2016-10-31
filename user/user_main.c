@@ -25,6 +25,7 @@ int (*console_printf)(const char *fmt, ...) = ets_uart_printf;
 static volatile os_timer_t loop_timer;
 static void  loop(os_event_t *events);
 uint8 swap = 0;
+//int cntr = 5;
 
 #define PLOT_INTERVAL   (1800)
 
@@ -34,7 +35,7 @@ void ICACHE_FLASH_ATTR loop(os_event_t *events)
 
 	if (flashWriteBit == 1) saveConfigs();
 
-//	ets_uart_printf("loop...\r\n");
+	ets_uart_printf("wifi_station_get_connect_status(%d) \r\n", wifi_station_get_connect_status());
 	//=========== get temperature ===================
 	getTemperature();
     signed int a = (tData[0][3] - '0') + (tData[0][2] - '0') * 10	+ (tData[0][1] - '0') * 100;
@@ -44,7 +45,7 @@ void ICACHE_FLASH_ATTR loop(os_event_t *events)
         swap ^= 1;
 	//================================================
 
-	static int cntr = 5;
+	//static int cntr = 5;
 	if (cntr)
 	{
 		cntr--;
