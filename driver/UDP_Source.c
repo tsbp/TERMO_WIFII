@@ -49,7 +49,7 @@ void ICACHE_FLASH_ATTR addValueToArray(char * tPtr, sint16 *arPtr, char aRot)
 
     sint16 e = (tPtr[1]- '0') * 100 + (tPtr[2]- '0') * 10 + (tPtr[3] - '0');
 
-    if((tPtr[0] - '0') == '-')  e *= (-1);
+    if(('0') == '-')  e *= (-1);
 
 		arPtr[POINTS_CNT-1] = e;
 }
