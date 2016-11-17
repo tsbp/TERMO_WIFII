@@ -30,14 +30,49 @@ void sntp_initialize(void)
 	sntp_init();
 	os_free(addr);
 }
-////================== SNTP ==================================================
-//uint8 sntp_get_stamp(void)
-//{
-//	uint32 current_stamp;
-//	current_stamp = sntp_get_current_timestamp();
-//	//ets_uart_printf("sntp: %d, %s \n",current_stamp, sntp_get_real_time(current_stamp));
-//	return sntp_get_current_timestamp();
-//}
+//================== SNTP ==================================================
+uint8 timeSync(void)
+{
+	uint32 ts = sntp_get_current_timestamp();
+			uint8 t[24];
+			os_memset(t, 0, sizeof(t));
+			os_sprintf(t, "%s", sntp_get_real_time(ts));
+	//		int i;
+	//		for(i =0; i < sizeof(t); i++)
+	//			ets_uart_printf("t[%d] = %c\r\n", i, t[i]);
+
+
+			ets_uart_printf("time %s \r\n", t);
+			if(ts != 0)
+			{
+				date_time.TIME.sec  = (t[17]-'0')*10 + (t[18]-'0');
+				date_time.TIME.min  = (t[14]-'0')*10 + (t[15]-'0');
+				date_time.TIME.hour = (t[11]-'0')*10 + (t[12]-'0');
+
+				date_time.DATE.day  = (t[8]-'0')*10 + (t[9]-'0');
+				date_time.DATE.year  = (t[20]-'0')*1000 + (t[21]-'0')*100 + (t[22]-'0')*10 + (t[23]-'0');
+
+				if(t[4] == 'J' && t[5] == 'a' && t[6] == 'n' )  date_time.DATE.month = 0;
+				if(t[4] == 'F' && t[5] == 'e' && t[6] == 'b' )  date_time.DATE.month = 1;
+				if(t[4] == 'M' && t[5] == 'a' && t[6] == 'r' )  date_time.DATE.month = 2;
+				if(t[4] == 'A' && t[5] == 'r' && t[6] == 'r' )  date_time.DATE.month = 3;
+				if(t[4] == 'M' && t[5] == 'a' && t[6] == 'y' )  date_time.DATE.month = 4;
+				if(t[4] == 'J' && t[5] == 'u' && t[6] == 'n' )  date_time.DATE.month = 5;
+				if(t[4] == 'J' && t[5] == 'u' && t[6] == 'l' )  date_time.DATE.month = 6;
+				if(t[4] == 'A' && t[5] == 'u' && t[6] == 'g' )  date_time.DATE.month = 7;
+				if(t[4] == 'S' && t[5] == 'e' && t[6] == 'p' )  date_time.DATE.month = 8;
+				if(t[4] == 'O' && t[5] == 'c' && t[6] == 't' )  date_time.DATE.month = 9;
+				if(t[4] == 'N' && t[5] == 'o' && t[6] == 'v' )  date_time.DATE.month = 10;
+				if(t[4] == 'D' && t[5] == 'e' && t[6] == 'c' )  date_time.DATE.month = 11;
+
+				sntp_stop();
+
+				return 1;
+
+			}
+			return 0;
+
+}
 //==============================================================================
 
 #ifdef COLOR_LCD

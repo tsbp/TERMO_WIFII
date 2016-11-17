@@ -12,14 +12,14 @@ XTENSA_TOOLS_ROOT ?= c:/Espressif/xtensa-lx106-elf/bin
 
 # base directory of the ESP8266 SDK package, absolute
 SDK_BASE	?= c:/Espressif/ESP8266_SDK
-SDK_TOOLS	?= c:/Espressif/utils/ESP8266
+SDK_TOOLS	?= c:/Espressif/utils/
 
 # Extra libs, include and ld file
 EXTRA_BASE	?= c:/Espressif/extra
 
 # esptool path and port
 ESPTOOL		?= $(SDK_TOOLS)/esptool.exe
-ESPPORT		?= COM14
+ESPPORT		?= COM6
 
 # Baud rate for programmer
 ESPBAUD		?= 576000

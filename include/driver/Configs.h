@@ -91,5 +91,5 @@ uint16 ICACHE_FLASH_ATTR getSetTemperature();
 unsigned char ICACHE_FLASH_ATTR cmpTemperature (uint16 aT, signed int arcTemper);
 void ICACHE_FLASH_ATTR showTemperature(uint8 aSwap, unsigned char *aBuf);
 void sntp_initialize(void);
-//uint8* sntp_get_stamp(void);
+uint8 timeSync(void);
   
