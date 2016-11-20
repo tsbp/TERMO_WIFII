@@ -121,7 +121,7 @@ void UDP_Recieved(void *arg, char *pusrdata, unsigned short length)
 										date_time.DATE.month = pusrdata[13];
 										date_time.DATE.year = pusrdata[14] + 2000;
 
-										sendUDPbroadcast(remoteTemp.byte, (uint16)sizeof(remoteTemp));
+										sendUDPbroadcast(remoteTemp.byte, (uint16)(sizeof(remoteTemp.sData) - 6));
 									}
 								}
 								break;

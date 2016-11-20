@@ -35,7 +35,7 @@ void ICACHE_FLASH_ATTR loop(os_event_t *events)
 {
 	//ets_uart_printf("%d.%d.%d\r\n", date_time.DATE.day, date_time.DATE.month, date_time.DATE.year);
 
-	if(!timeTrue) timeTrue = timeSync();
+
 
 	if (flashWriteBit == 1) saveConfigs();
 
@@ -89,6 +89,7 @@ void ICACHE_FLASH_ATTR loop(os_event_t *events)
 	//==========================================================================
 	if(configs.hwSettings.deviceMode == DEVICE_MODE_MASTER)
 	{
+		if(!timeTrue) timeTrue = timeSync();
 		timeIncrement();
 		//===========================================
 		uint16 t = getSetTemperature();
