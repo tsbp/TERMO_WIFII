@@ -259,7 +259,7 @@ void UDP_Recieved(void *arg, char *pusrdata, unsigned short length)
 				case READ_USTANOVKI:
 					{
 						char data[3];
-						data[1] = READ_USTANOVKI;
+						data[0] = READ_USTANOVKI_ANS;
 						data[1] = configs.nastr.delta ;
 						data[2] = configs.hwSettings.swapSens;
 						espconn_sent(pesp_conn, data, sizeof(data));
