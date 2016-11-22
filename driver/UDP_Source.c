@@ -96,8 +96,6 @@ void UDP_Recieved(void *arg, char *pusrdata, unsigned short length)
 
 	if (espconn_get_connection_info(pesp_conn, &premot, 0) == ESPCONN_OK)
 	{
-
-
 //		ets_uart_printf("recv udp ip: %d.%d.%d.%d\r\n", premot->remote_ip[0] ,premot->remote_ip[1], premot->remote_ip[2], premot->remote_ip[3]);
 //		ets_uart_printf("recv udp port: %d\r\n", premot->remote_port);
 
@@ -121,7 +119,7 @@ void UDP_Recieved(void *arg, char *pusrdata, unsigned short length)
 										date_time.DATE.month = pusrdata[13];
 										date_time.DATE.year = pusrdata[14] + 2000;
 
-										sendUDPbroadcast(remoteTemp.byte, (uint16)(sizeof(remoteTemp.sData) - 6));
+										sendUDPbroadcast(remoteTemp.byte, (uint16)(sizeof(remoteTemp) - 6));
 									}
 								}
 								break;
@@ -150,10 +148,8 @@ void UDP_Recieved(void *arg, char *pusrdata, unsigned short length)
 								}
 								break;
 		}
-
-
         //============================================================================================================================
-		if(configs.hwSettings.deviceMode == DEVICE_MODE_MASTER)
+		if(configs.hwSettings.deviceMode == DEVICE_MODE_MASTER && pusrdata[0] != BROADCAST_DATA)
 		{
 			pesp_conn->proto.udp->remote_port = 7777;
 			pesp_conn->proto.udp->remote_ip[0] = premot->remote_ip[0];

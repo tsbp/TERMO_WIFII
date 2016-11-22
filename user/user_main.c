@@ -27,15 +27,13 @@ static void  loop(os_event_t *events);
 uint8 swap = 0;
 //int cntr = 5;
 
-#define PLOT_INTERVAL   (1800)
+#define PLOT_INTERVAL   (3600)
 uint8 timeTrue = 0;
 
 //======================= Main code function ============================================================
 void ICACHE_FLASH_ATTR loop(os_event_t *events)
 {
 	//ets_uart_printf("%d.%d.%d\r\n", date_time.DATE.day, date_time.DATE.month, date_time.DATE.year);
-
-
 
 	if (flashWriteBit == 1) saveConfigs();
 
@@ -48,8 +46,6 @@ void ICACHE_FLASH_ATTR loop(os_event_t *events)
 	showTemperature(swap, tData[swap]);
         swap ^= 1;
 	//================================================
-
-	//static int cntr = 5;
 	if (cntr)
 	{
 		cntr--;
@@ -72,7 +68,6 @@ void ICACHE_FLASH_ATTR loop(os_event_t *events)
 		addValueToArray(tData[0], plotData[0], ROTATE);
 		addValueToArray(tData[1], plotData[1], ROTATE);
 
-
 		//===== graphic ========
 #ifdef COLOR_LCD
 
@@ -84,8 +79,6 @@ void ICACHE_FLASH_ATTR loop(os_event_t *events)
 		valueToPlotBuffer(b, tBuffer[1]);
 #endif
 	}
-
-
 	//==========================================================================
 	if(configs.hwSettings.deviceMode == DEVICE_MODE_MASTER)
 	{
@@ -113,15 +106,10 @@ void ICACHE_FLASH_ATTR loop(os_event_t *events)
 //==============================================================================
 void ICACHE_FLASH_ATTR setup(void)
 {
-
-
-	
-
 #ifndef COLOR_LCD
 	Lcd_Clear();
 	LINES();
 #endif
-
 
 	set_gpio_mode(1,GPIO_PULLUP, GPIO_OUTPUT);
 	button_init();
@@ -144,8 +132,6 @@ void ICACHE_FLASH_ATTR user_init(void)
 	os_delay_us(1000000);
 	ets_uart_printf("System init...\r\n");
 
-
-
 	//saveConfigs();
 	readConfigs();
 
@@ -165,12 +151,9 @@ void ICACHE_FLASH_ATTR user_init(void)
 	if(configs.hwSettings.wifi.mode == SOFTAP_MODE) setup_wifi_ap_mode();
 		else if(configs.hwSettings.wifi.mode == STATION_MODE) setup_wifi_st_mode();
 
-
-
-
 	// Start setup timer
-		os_timer_disarm(&loop_timer);
-		os_timer_setfn(&loop_timer, (os_timer_func_t *) setup, NULL);
+	os_timer_disarm(&loop_timer);
+	os_timer_setfn(&loop_timer, (os_timer_func_t *) setup, NULL);
 	os_timer_arm(&loop_timer, LOOP_PERIOD * 2, false);
 }
 /******************************************************************************
