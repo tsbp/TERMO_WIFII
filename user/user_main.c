@@ -55,6 +55,7 @@ void ICACHE_FLASH_ATTR loop(os_event_t *events)
 		else if (cntr == 1) 	showGraphic(tBuffer[1], 240, 0x5b5b00);
 		else
 #endif
+#warning strange code 
 			if(configs.hwSettings.deviceMode == DEVICE_MODE_MASTER)
 		{
 			uint16 t = getSetTemperature();
